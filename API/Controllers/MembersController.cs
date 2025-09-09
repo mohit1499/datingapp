@@ -10,8 +10,7 @@ namespace API.Controllers
 {
     public class MembersController(AppDbContext context) : BaseApiController
     {
-        [HttpGet]
-        [Authorize]
+        [HttpGet]     
         public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers()
         {
             var members = await context.User.ToListAsync();
@@ -20,9 +19,10 @@ namespace API.Controllers
 
 
         [HttpGet("{id}")] // api/members/{id}             here id is route parameter not fixed path segemnt
+        [Authorize]
         public async Task<ActionResult<AppUser>> GetMember(string id)
         {
-            var member =  await context.User.FindAsync(id);
+            var member = await context.User.FindAsync(id);
 
             if (member == null)
             {

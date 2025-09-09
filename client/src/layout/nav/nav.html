@@ -1,0 +1,37 @@
+<header class="p-3 w-full fixed top-0 z-50 bg-gradient-to-r from-primary to-black">
+    <div class="flex align-middle items-center px-10 mx-auto gap-6">
+        <a class="max-h-16 text-white border-r-white border-r-2 pr-6">
+            Dating app
+        </a>
+        <nav class="flex gap-3 my-2 uppercase text-lg text-white">
+            <a>Matches</a>
+            <a>Lists</a>
+            <a>Messages</a>
+        </nav>
+        <div class="flex align-middle ml-auto gap-3">
+            @if (accountService.currentUser(); as user) {
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" 
+                class="flex items-center text-white text-xl gap-3 cursor-pointer">
+                <img src="/user.png" alt="user avatar" class="w-8 h-8 rounded-full">
+                <span>{{user.displayName}}</span>
+            </div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                    <li><a>Profile</a></li>
+                    <li><a (click)="logout()">Logout</a></li>
+                </ul>
+            </div>
+            }
+            @else { <form #loginForm="ngForm" (ngSubmit)="login()" class="flex items-center gap-3">
+                <!--#loginForm="ngForm" makes it a angular form. Read refernce variables-->
+                <input [(ngModel)]="creds.email" name="email" type="text" class="input" placeholder="Email">
+                <input [(ngModel)]="creds.password" name="password" type="password" class="input"
+                    placeholder="Password">
+                <button type="submit" class="btn">Login</button>
+            </form>
+            }
+
+
+        </div>
+    </div>
+</header>

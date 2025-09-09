@@ -1,0 +1,26 @@
+<div class="hero bg-base-200 min-h-screen">
+    @if(!registerMode())
+    {<div class="hero-content text-center">
+        <div class="flex flex-col items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="">
+                <path
+                    d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0Z" />
+            </svg>
+            <h1 class="text-5xl font-bold">Find your match</h1>
+            <p class="py-6">Come on in... all you need to do is sign up</p>
+            <div class="flex items-center gap-3">
+                <button (click) ="showRegister(true)" class="btn btn-primary btn-lg">Register</button>
+                <button class="btn btn-info btn-lg">Learn more</button>
+            </div>
+        </div>
+    </div>}
+    @else
+    {
+    <div class="text-2xl w-full text-center flex justify-center">
+        <app-register class="w-full" (cancelRegister)= "showRegister($event)"/>
+       
+
+        <!--input properties use [] and output properties us ()-->
+    </div>
+    }
+</div>
