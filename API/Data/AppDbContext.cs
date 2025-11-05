@@ -10,5 +10,7 @@ public class AppDbContext : DbContext
     {
 
     }
-    public DbSet<AppUser> User { get; set; }
+    public DbSet<AppUser> Users { get; set; }
+    public DbSet<Member> Members { get; set; }
+    public DbSet<Photo> Photos { get; set; }
 }

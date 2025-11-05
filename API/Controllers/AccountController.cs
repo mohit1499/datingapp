@@ -36,7 +36,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     [HttpPost("login")]  //api/account/login
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
-        var user = await context.User.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
+        var user = await context.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
         if (user == null) return Unauthorized("Invalid Email");
 
         using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -52,7 +52,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     [HttpPost("delete")]
     public async Task<IActionResult> DeleteUser([FromBody] string id)
     {
-        var user = await context.User.FindAsync(id);
+        var user = await context.Users.FindAsync(id);
         if (user == null) { return NotFound(); }
         context.Remove(user);
         await context.SaveChangesAsync();
@@ -61,7 +61,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
 
     public async Task<bool> EmailExists(string email)
     {
-        return await context.User.AnyAsync(x => x.Email.ToLower() == email.ToLower());
+        return await context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower());
     }
 
 }

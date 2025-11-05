@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../core/services/account-service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastService } from '../../core/services/toast-service';
+import { themes } from './theme';
 
 
 @Component({
@@ -12,11 +13,28 @@ import { ToastService } from '../../core/services/toast-service';
   styleUrl: './nav.css'
 })
 
-export class Nav {
+export class Nav implements OnInit{
+ 
   protected accountService = inject(AccountService)
   protected creds:any ={}
   private router = inject(Router);
   private toast = inject(ToastService);
+  protected selectedTheme = signal(localStorage.getItem('theme') || 'light');
+  protected themes = themes;
+  
+  ngOnInit(): void {
+    document.documentElement.setAttribute('data-theme', this.selectedTheme());
+  }
+  
+  handleSelectedTheme(theme:string){
+    this.selectedTheme.set(theme);
+    localStorage.setItem('theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+
+    var elem = document.activeElement as HTMLDivElement;
+    elem.blur();
+  }
+
   login(){
     this.accountService.login(this.creds).subscribe({
       next: () =>{
