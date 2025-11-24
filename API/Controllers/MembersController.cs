@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -38,6 +40,36 @@ namespace API.Controllers
             var photos = await memberRepository.GetPhotosForMemberAsync(id);
             return Ok(photos);
         }
-        
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateMember(MembeUpdaterDto memberUpdateDto)
+        {
+            var memberId = User.GetMemberId();
+
+            if (memberId == null)
+            {
+                return BadRequest("No Member Id");
+            }
+
+            var member = await memberRepository.GetMemberForUpdate(memberId);
+
+            if (member == null)
+            {
+                return BadRequest("Member Not Found");
+            }
+
+            member.DisplayName = memberUpdateDto.DisplayName ?? member.DisplayName;
+            member.Description = memberUpdateDto.Description ?? member.Description;
+            member.City = memberUpdateDto.City ?? member.City;
+            member.Country = memberUpdateDto.Country ?? member.Country;
+
+            member.User.DisplayName = memberUpdateDto.DisplayName ?? member.User.DisplayName;
+
+            memberRepository.Update(member);
+
+            if (await memberRepository.SaveAllAsync()) return NoContent();
+            
+            return BadRequest("Failed to update member");
+        }       
     }
 }
